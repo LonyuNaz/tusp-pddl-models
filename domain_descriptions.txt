@@ -1,0 +1,93 @@
+
+==============
+ 1a
+==============
+
+actions:
+
+service_train 
+move_[a/b]side          
+
+no restrictions to how many trains can move at the same time
+
+goal state formulations can be done by the "ahead_" derived predicate
+
+==============
+ 1b 
+==============
+
+same actions as 1a but assumes every track is a uniquedistance from the entry track
+
+==============
+ 1c
+==============
+
+same as 1a but instead of "ahead_" for each train the goal state consists of a single
+literal named ahead_all
+
+==============
+ 1d
+==============
+
+same as 1a but instead of "ahead_" for each train the goal state consists of only two
+literals named "ahead_all" and "serviced_all"
+
+==============
+ 2
+==============
+
+actions:
+
+service_train 
+move_[a/b]side          
+
+there are restrictions to how many trains can move at the same time, these can be set
+by the numeric_fluents max_concurrent_movements which is a constant
+
+goal state formulations can be done by the "ahead_" derived predicate
+
+==============
+ 3a
+==============
+
+actions:
+
+enter_[a/b]side                 :   after this action the direction of the train is set
+exit                            :   can only be done on a parking track, unsets diretion of train
+service_train                   :   train must be operated and the driver exits instantly
+move_[a/b]side                  :   direction must be set before this movement can happen
+
+there are restrictions to how many trains can move at the same time, these can be set
+by the numeric_fluents max_concurrent_movements which is a constant
+
+goal state formulations can be done by the "ahead_" derived predicate
+
+==============
+ 3b
+==============
+
+same as 3a but for unique entry distances
+
+==============
+ 3c
+==============
+
+enter_and_move_[a/b]side        :   after this action the direction of the train is set and the train is moved
+
+same as 3a but enter_[a/b]side is replaced by enter_and_move_[a/b]side
+
+==============
+ 4a
+==============
+
+actions:
+
+enter_and_move_[a/b]side        :   after this action the direction of the train is set and the train is moved
+exit                            :   can only be done on a parking track, unsets diretion of train
+service_train                   :   train must be operated and the driver exits instantly
+move_[a/b]side                  :   direction must be set before this movement can happen
+
+there are restrictions to how many trains can move at the same time, these can be set
+by the numeric_fluents max_concurrent_movements which is a constant
+
+goal state formulations can be done by the "ahead_" derived predicate

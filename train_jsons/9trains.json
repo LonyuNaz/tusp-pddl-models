@@ -1,0 +1,24 @@
+{
+  "arrivals": [
+    { "name": "slt40", "length": 80, "available": true },
+    { "name": "slt41", "length": 80, "available": true },
+    { "name": "slt42", "length": 80, "available": true },
+    { "name": "slt43", "length": 80, "available": true },
+    { "name": "slt44", "length": 80, "available": true },
+    { "name": "slt45", "length": 80, "available": true },
+    { "name": "slt46", "length": 80, "available": true },
+    { "name": "slt47", "length": 80, "available": true },
+    { "name": "slt48", "length": 80, "available": true }
+  ],
+  "departures": [
+    { "name": "slt40", "length": 80, "available": true },
+    { "name": "slt41", "length": 80, "available": true },
+    { "name": "slt42", "length": 80, "available": true },
+    { "name": "slt43", "length": 80, "available": true },
+    { "name": "slt44", "length": 80, "available": true },
+    { "name": "slt45", "length": 80, "available": true },
+    { "name": "slt46", "length": 80, "available": true },
+    { "name": "slt47", "length": 80, "available": true },
+    { "name": "slt48", "length": 80, "available": true }
+  ]
+}

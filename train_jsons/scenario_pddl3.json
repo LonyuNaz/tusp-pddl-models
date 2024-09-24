@@ -1,0 +1,23 @@
+{
+    "arrivals": [
+      { "name": "slt40", "length": 80, "active": true },
+      { "name": "slt41", "length": 80, "active": true },
+      { "name": "slt42", "length": 80, "active": true },
+      { "name": "slt43", "length": 80, "active": true },
+      { "name": "slt44", "length": 80, "active": true },
+      { "name": "slt45", "length": 80, "active": true },
+      { "name": "slt46", "length": 80, "active": true },
+      { "name": "slt47", "length": 80, "active": true }
+    ],
+    "departures": [
+      { "name": "slt40", "length": 80, "active": true },
+      { "name": "slt41", "length": 80, "active": true },
+      { "name": "slt42", "length": 80, "active": true },
+      { "name": "slt43", "length": 80, "active": true },
+      { "name": "slt44", "length": 80, "active": true },
+      { "name": "slt45", "length": 80, "active": true },
+      { "name": "slt46", "length": 80, "active": true },
+      { "name": "slt47", "length": 80, "active": true }
+    ]
+  }
+  
