@@ -1,0 +1,144 @@
+{
+  "trackParts": [
+    {
+      "id": 2,
+      "name": "52",
+      "length": 473,
+      "aSide": [16],
+      "bSide": [10],
+      "parkingAllowed": true,
+      "sawMovementAllowed": true,
+      "type": "RailRoad"
+    },
+    {
+      "id": 3,
+      "name": "53",
+      "length": 421,
+      "aSide": [16],
+      "bSide": [10],
+      "parkingAllowed": true,
+      "sawMovementAllowed": true,
+      "type": "RailRoad"
+    },
+    {
+      "id": 4,
+      "name": "54",
+      "length": 377,
+      "aSide": [16],
+      "bSide": [10],
+      "parkingAllowed": true,
+      "sawMovementAllowed": true,
+      "type": "RailRoad"
+    },
+    {
+      "id": 5,
+      "name": "55",
+      "length": 380,
+      "aSide": [16],
+      "bSide": [10],
+      "parkingAllowed": true,
+      "sawMovementAllowed": true,
+      "type": "RailRoad"
+    },
+    {
+      "id": 6,
+      "name": "56",
+      "length": 212,
+      "aSide": [16],
+      "bSide": [17],
+      "parkingAllowed": true,
+      "sawMovementAllowed": true,
+      "type": "RailRoad"
+    },
+    {
+      "id": 7,
+      "name": "57",
+      "length": 192,
+      "aSide": [16],
+      "bSide": [17],
+      "parkingAllowed": true,
+      "sawMovementAllowed": true,
+      "type": "RailRoad"
+    },
+    {
+      "id": 8,
+      "name": "58",
+      "length": 193,
+      "aSide": [16],
+      "bSide": [17],
+      "parkingAllowed": true,
+      "sawMovementAllowed": true,
+      "type": "RailRoad"
+    },
+    {
+      "id": 9,
+      "name": "59",
+      "length": 271,
+      "aSide": [16],
+      "bSide": [17],
+      "parkingAllowed": true,
+      "sawMovementAllowed": true,
+      "type": "RailRoad"
+    },
+    {
+      "id": 10,
+      "name": "60",
+      "length": 248,
+      "aSide": [2,3,4,5,6,17],
+      "bSide": [13],
+      "parkingAllowed": true,
+      "sawMovementAllowed": true,
+      "type": "RailRoad"
+    },
+    {
+      "id": 11,
+      "name": "61",
+      "length": 287,
+      "aSide": [17],
+      "bSide": [13],
+      "parkingAllowed": true,
+      "sawMovementAllowed": true,
+      "type": "RailRoad"
+    },
+    {
+      "id": 12,
+      "name": "62",
+      "length": 287,
+      "aSide": [17],
+      "bSide": [13],
+      "parkingAllowed": true,
+      "sawMovementAllowed": true,
+      "type": "RailRoad"
+    },
+    {
+      "id": 13,
+      "name": "63",
+      "length": 316,
+      "aSide": [10,11,12],
+      "bSide": [],
+      "parkingAllowed": true,
+      "sawMovementAllowed": true,
+      "type": "RailRoad"
+    },
+    {
+      "id": 16,
+      "name": "906a",
+      "length": 100,
+      "aSide": [],
+      "bSide": [25, 42],
+      "parkingAllowed": false,
+      "sawMovementAllowed": false,
+      "type": "RailRoad"
+    },
+    {
+      "id": 17,
+      "name": "Phantom1",
+      "length": 400,
+      "aSide": [6,7,8,9],
+      "bSide": [10,11,12],
+      "parkingAllowed": false,
+      "sawMovementAllowed": false,
+      "type": "RailRoad"
+    }
+  ]
+}

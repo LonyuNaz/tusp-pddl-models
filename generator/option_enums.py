@@ -17,10 +17,14 @@ class MovementOption(Enum):
     ACROSS = 1
     END_OF_TRACK = 2
 
-class ConcurrencyOption(Enum):
+class TurnOption(Enum):
+    NONE = 1
+    DEFAULT_ASIDE = 2
+    DEFAULT_BSIDE = 3
+
+class CrewOption(Enum):
     DRIVER_OBJECTS = 1
-    NUMERIC_FLUENT = 2
-    NONE = 3
+    NONE = 2
 
 class Goal(Enum):
     PARKED = 1
@@ -30,6 +34,12 @@ class Goal(Enum):
     AT_ENTRY = 5
     ORDER = 6
     AHEAD_ALL = 7
+    SERVICED_ALL = 8
+
+class GoalOption(Enum):
+    ACTION_TYPE = 1
+    ACTION_TRAIN = 2
+    DERIVED_TRAIN = 3
 
 class Direction(Enum):
     ASIDE = 1
@@ -38,3 +48,7 @@ class Direction(Enum):
 class ParkOption(Enum):
     DERIVED_PREDICATES = 1
     ACTION = 2
+
+class SwitchOption(Enum):
+    NONE = 1
+    ACTIONS = 2

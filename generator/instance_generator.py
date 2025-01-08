@@ -9,9 +9,9 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 from typing import List, Union, Tuple, Dict
 
-from generator.option_enums import (LengthOption, LocationOption, ConcurrencyOption, 
+from generator.option_enums import (LengthOption, LocationOption, CrewOption, 
                                     MovementOption, CostOption, Goal, Direction,
-                                    ParkOption)
+                                    ParkOption, SwitchOption, TurnOption)
 from generator.pddl_objects import Track, Train, Driver
 
 
@@ -19,24 +19,26 @@ class ShuntingYard:
 
     def __init__(self,
                  cost_option: CostOption,
-                 length_option: LengthOption,
-                 location_option: LocationOption,
-                 concurrency_option: ConcurrencyOption,
+                 crew_option: CrewOption,
                  movement_option: MovementOption,
-                 walking_distances: Dict[Tuple[str, str], int],
-                 switches_included: bool,
+                 turn_option: TurnOption,
+                 walking_durations: Dict[Tuple[str, str], int],
+                 switch_option: SwitchOption,
                  unique_entry_distance: bool,
+                 goal_actions: bool = False,
+                 negative_preconditions: bool = True,
                  domain_name: str = "",
                  problem_name: str = ""):
         
         self.cost_option = cost_option
-        self.length_option = length_option
-        self.location_option = location_option
-        self.concurrency_option = concurrency_option
+        self.crew_option = crew_option
         self.movement_option = movement_option
-        self.walking_distances = walking_distances
-        self.switches_included = switches_included
+        self.turn_option = turn_option
+        self.walking_durations = walking_durations
+        self.switch_option = switch_option
         self.unique_entry_distance = unique_entry_distance
+        self.goal_actions = goal_actions
+        self.negative_preconditions = negative_preconditions
         self.domain_name = domain_name
         self.problem_name = problem_name
 
@@ -63,8 +65,8 @@ class ShuntingYard:
             track['name'] = re.sub('[^0-9a-zA-Z]+', '_', track['name'])
 
         allowed_types = ["RailRoad"]
-        if self.switches_included:
-            allowed_types += ["Switch", "EnglishSwitch"]
+        # if self.switch_option == SwitchOption.OBJECTS:
+        #     allowed_types += ["Switch", "EnglishSwitch"]
 
         def find_aside_connection(track, tracks, connections):
             aside_connections = track['aSide']
@@ -89,7 +91,7 @@ class ShuntingYard:
 
             aside_tracks = find_aside_connection(track, tracks, set())
             for other in aside_tracks:
-                links.append((track['name'], other))
+                links.append((other, track['name']))
 
         for name, length, parking in sorted(tracks_filtered, key=lambda x: x[0]):
             self.add_track(name, length, parking)
@@ -187,7 +189,7 @@ class ShuntingYard:
     def add_entry_track(self, conns: List[str], conn_dir: Direction):
         assert all(t in self.get_track_names() for t in conns)
 
-        if self.location_option == LocationOption.RELATIVE:
+        if self.movement_option == MovementOption.END_OF_TRACK:
             length = 0
         else:
             length = sum([t.length for t in self.trains])
@@ -198,9 +200,9 @@ class ShuntingYard:
 
         for conn in conns:
             if conn_dir == Direction.ASIDE:
-                self.connect_tracks("entry", conn)
-            else:
                 self.connect_tracks(conn, "entry")
+            else:
+                self.connect_tracks("entry", conn)
 
     def add_goal(self, train_name: str, goal: Goal):
         train = self.get_train(train_name)
@@ -259,7 +261,6 @@ class ShuntingYard:
             plt.show()
         
 
-
     def generate(self):
         # self.simplify_track_lengths()
 
@@ -268,22 +269,27 @@ class ShuntingYard:
                     f"(:domain {self.domain_name})",
                     "(:objects", ""]
         
-        if self.location_option == LocationOption.EXACT and self.movement_option == MovementOption.END_OF_TRACK:
+        if self.movement_option == MovementOption.END_OF_TRACK:
             for t in self.tracks:
-                if t.entry_distance == 0:
+                if "entry" in t.name.lower():
                     t.length = sum([train.length for train in self.trains])
         
-        if self.concurrency_option == ConcurrencyOption.DRIVER_OBJECTS:
+        if self.crew_option == CrewOption.DRIVER_OBJECTS:
             lines += [d.object_name() for d in self.drivers]
-        lines += [t.object_name(self.length_option) for t in self.trains]
-        lines += [t.object_name(self.length_option) for t in self.tracks]
+        lines += [t.object_name() for t in self.trains]
+        lines += [t.object_name() for t in self.tracks]
 
         lines += ["", ")", "", "(:init", ""]
 
-        if self.concurrency_option == ConcurrencyOption.DRIVER_OBJECTS:
+        if self.cost_option == CostOption.METRIC:
+            lines += [f"\t(= (total-cost) 0)", ""]
+        
+        # lines += [f"\t(= (parking_counter) 0)", ""]        
+
+        if self.crew_option == CrewOption.DRIVER_OBJECTS:
             for driver in self.drivers:
-                lines += driver.init_fluents(self.walking_distances is not None)
-        elif self.concurrency_option == ConcurrencyOption.NUMERIC_FLUENT:
+                lines += driver.init_fluents(self.walking_durations is not None)
+        elif self.cost_option == CostOption.DURATION:
             lines += [f"\t(= (max_concurrent_movements) {len(self.drivers)})"]
             lines += [f"\t(= (concurrent_movements) 0)"]
 
@@ -298,20 +304,39 @@ class ShuntingYard:
                     sp += 0.01
                 shortest_paths.append(sp)
             sp = round(sp,2)
-            lines += track.init_fluents(self.length_option, self.location_option, 
-                                        self.movement_option, sp, max_length=max_length)
+            lines += track.init_fluents(self.movement_option, sp)
 
         lines += ["", "\t; track connections", "\t; ===================="]
 
+        # if self.explicit_different_tracks:
+        #     for i in range(len(self.tracks)-1):
+        #         for j in range(i+1,len(self.tracks)):
+        #             lines += [f"\t(is_different track_{self.tracks[i].name} track_{self.tracks[j].name})"]
+        #     lines += [""]
 
-        for aside, bside in self.track_connections:
-            lines += [f"\t(track_connected track_{aside} track_{bside})"]
+        
+
+        if self.switch_option == SwitchOption.ACTIONS:
+            for aside, bside in self.track_connections:
+                lines += [f"\t(potential_connection track_{aside} track_{bside})"]
+            asides = []
+            bsides = []
+            for aside, bside in self.track_connections:
+                if aside not in asides and bside not in bsides:
+                    lines += [f"\t(connected track_{aside} track_{bside})"]
+                    asides.append(aside)
+                    bsides.append(bside)
+        elif self.switch_option == SwitchOption.NONE:
+            for aside, bside in self.track_connections:
+                lines += [f"\t(connected track_{aside} track_{bside})"]
 
         lines += [""]
         
         total_distance = 0
         for train in self.trains:
-            if Goal.AHEAD in train.goals:
+            # if self.cost_option == CostOption.METRIC:
+            #     train.available = False
+            if Goal.AHEAD in train.goals: # and self.movement_option != MovementOption.ACROSS:
                 train.priority = None
             if self.movement_option == MovementOption.END_OF_TRACK:
                 if self.entry_conn_dir == Direction.ASIDE:
@@ -320,38 +345,58 @@ class ShuntingYard:
                     distance = sum([t.length for t in self.trains]) - total_distance - train.length
             else:
                 distance = None
-            lines += train.init_fluents(self.length_option, 
-                                        self.location_option, 
-                                        self.concurrency_option,
+            lines += train.init_fluents(self.movement_option, 
+                                        self.crew_option,
+                                        self.turn_option,
+                                        self.negative_preconditions,
                                         distance, 
-                                        self.train_exit_order[train.name])
+                                        self.train_exit_order[train.name],
+                                        )
             total_distance += train.length
 
-        if self.walking_distances is not None:
+        if self.walking_durations is not None:
             dist_pairs_added = []
             singles_added = []
-            for ((t1, t2), dist) in self.walking_distances.items():
+            for ((t1, t2), dist) in self.walking_durations.items():
                 if t1 not in singles_added:
-                    lines += [f"\t(= (walking_distance track_{t1} track_{t1}) 0)"]
+                    lines += [f"\t(= (walking_duration track_{t1} track_{t1}) 0)"]
                     singles_added.append(t1)
                 if t2 not in singles_added:
-                    lines += [f"\t(= (walking_distance track_{t2} track_{t2}) 0)"]
+                    lines += [f"\t(= (walking_duration track_{t2} track_{t2}) 0)"]
                     singles_added.append(t2)
                 if (t1, t2) not in dist_pairs_added:
-                    lines += [f"\t(= (walking_distance track_{t1} track_{t2}) {dist})"]
+                    lines += [f"\t(= (walking_duration track_{t1} track_{t2}) {dist})"]
                     dist_pairs_added.append((t1, t2))
                 if (t2, t1) not in dist_pairs_added:
-                    lines += [f"\t(= (walking_distance track_{t2} track_{t1}) {dist})"]
+                    lines += [f"\t(= (walking_duration track_{t2} track_{t1}) {dist})"]
                     dist_pairs_added.append((t2, t1))
 
-        lines += [")", "(:goal (and", ""]
+        lines += [""]
 
         trains_ordered = sorted(self.train_exit_order.keys(), key=lambda x: self.train_exit_order[x], reverse=True)
+        
+        if self.goal_actions:
+            for train in self.trains:
+                for goal in train.goals:
+                    if goal == Goal.AHEAD:
+                        exit_idx = trains_ordered.index(train.name)
+                        for i in range(exit_idx+1,len(trains_ordered)):
+                            if self.entry_conn_dir == Direction.ASIDE:
+                                lines += [f"\t(parking_pair train_{trains_ordered[i]} train_{train.name})"]
+                            elif self.entry_conn_dir == Direction.BSIDE:
+                                lines += [f"\t(parking_pair train_{train.name} train_{trains_ordered[i]})"]
+
+
+        lines += [")", "(:goal (and"]
+
 
         for train in self.trains:
             if Goal.AHEAD_ALL in train.goals:
                 lines += [f"\t(ahead_all)"]
+                if Goal.SERVICED_ALL in train.goals:
+                    lines += [f"\t(serviced_all)"]
                 break
+            
             if Goal.AHEAD in train.goals:
                 train.priority = None
             for goal in train.goals:
@@ -366,11 +411,11 @@ class ShuntingYard:
                     lines += [f"\t(parked train_{train.name})"]
                 elif goal == Goal.AHEAD:
                     exit_idx = trains_ordered.index(train.name)
-                    if exit_idx < (len(trains_ordered)-1):
+                    for i in range(exit_idx+1,len(trains_ordered)):
                         if self.entry_conn_dir == Direction.ASIDE:
-                            lines += [f"\t(ahead_bside train_{train.name} train_{trains_ordered[exit_idx+1]})"]
+                            lines += [f"\t(ahead_bside train_{train.name} train_{trains_ordered[i]})"]
                         elif self.entry_conn_dir == Direction.BSIDE:
-                            lines += [f"\t(ahead_aside train_{train.name} train_{trains_ordered[exit_idx+1]})"]
+                            lines += [f"\t(ahead_aside train_{train.name} train_{trains_ordered[i]})"]
                 elif goal == Goal.AT_ENTRY:
                     lines += [f"\t(train_at train_{train.name} track_entry)"]
                 elif goal == Goal.ORDER:
@@ -381,10 +426,14 @@ class ShuntingYard:
                         elif self.entry_conn_dir == Direction.BSIDE:
                             lines += [f"\t(< (order train_{train.name}) (order train_{trains_ordered[exit_idx+1]}))"]
 
+        
 
-        lines += [""]    
+        lines += ["))"]
 
-        lines += ["", "))", ")"]
+        if self.cost_option == CostOption.METRIC:
+            lines += ["(:metric minimize (total-cost))"]    
+
+        lines += [")"]
 
         filename = Path(self.problem_name+".pddl")
         filename.touch(exist_ok=True) 
@@ -394,3 +443,4 @@ class ShuntingYard:
 
         with open(filename, 'w+') as f:
             f.write("\n".join(lines))
+

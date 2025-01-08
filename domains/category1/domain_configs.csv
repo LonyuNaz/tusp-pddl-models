@@ -1,0 +1,25 @@
+config,domain,concurrency,movement,drivers,switch,walking,unique_distances,goal,turns,subgoals,comment
+1,1a,yes,end_of_track,no,no,no,no,action,no,ahead,-
+2,1a,yes,end_of_track,no,no,no,no,action,no,ahead+serviced,-
+3,1b,yes,end_of_track,no,no,no,no,derived,no,ahead,-
+4,1c,yes,end_of_track,no,no,no,yes,derived,no,ahead,-
+5,1d,yes,end_of_track,no,yes,no,no,derived,no,ahead,-
+6,2a,yes,end_of_track,no,no,no,no,action,yes,ahead,-
+7,2b,yes,end_of_track,no,no,no,no,derived,yes,ahead,-
+8,2c,yes,end_of_track,no,no,no,no,derived,yes,ahead,turn+move combined
+9,3a,yes,end_of_track,yes,no,no,no,derived,no,ahead,-
+10,3b,yes,end_of_track,yes,no,no,no,derived,no,ahead,enter+move combined
+11,3b,yes,end_of_track,yes,no,no,no,derived,no,ahead+serviced,enter+move combined
+12,3c,yes,end_of_track,yes,no,no,no,action,no,ahead,enter+move combined
+13,3d,yes,end_of_track,yes,no,no,yes,derived,no,ahead,enter+move combined
+14,3e,yes,end_of_track,yes,yes,no,no,derived,no,ahead,enter+move combined
+15,4a,yes,end_of_track,yes,no,no,no,derived,yes,ahead+serviced,enter+move combined and turn+move combined
+16,4b,yes,end_of_track,yes,no,no,no,derived,yes,ahead,enter+move and exit+turn combined
+17,5a,yes,end_of_track,yes,no,yes,no,derived,no,ahead,enter+walk combined
+18,5b,yes,end_of_track,yes,no,yes,no,derived,no,ahead,enter+walk+move combined
+19,6a,yes,end_of_track,yes,no,yes,no,derived,yes,ahead,enter+walk+move and exit+turn combined
+0,1e,yes,end_of_track,no,no,no,no,action,no,ahead,-
+21,1e,yes,end_of_track,no,no,no,no,action,no,ahead+serviced,-
+22,2d,yes,end_of_track,no,no,no,no,action,yes,ahead,-
+23,2e,yes,end_of_track,no,no,no,no,action,yes,ahead,turn+move combined
+24,2f,yes,end_of_track,no,no,no,yes,action,yes,ahead,turn+move combined

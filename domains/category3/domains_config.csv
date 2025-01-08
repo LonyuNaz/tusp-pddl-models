@@ -1,0 +1,26 @@
+config,domain,concurrency,movement,drivers,switch,walking,unique_distances,goal,turns,subgoals,comment
+1,1a,no,end_of_track,no,no,no,no,action,no,ahead,-
+2,1b,no,end_of_track,no,no,no,yes,action,no,ahead,-
+3,1c,no,end_of_track,no,no,no,no,action2,no,ahead,-
+4,2a,no,end_of_track,no,no,no,no,action,yes,ahead,-
+5,2a,no,end_of_track,no,no,no,no,action,yes,ahead+serviced,-
+6,2b,no,end_of_track,no,no,no,no,action,yes,ahead,turn+move combined
+7,2b,no,end_of_track,no,no,no,no,action,yes,ahead+serviced,turn+move combined
+8,2c,no,end_of_track,no,no,no,yes,action,yes,ahead,turn+move combined
+9,3a,no,end_of_track,yes,no,no,no,action,no,ahead,-
+10,3b,no,end_of_track,yes,no,no,no,action,no,ahead,enter+move combined
+11,3c,no,end_of_track,yes,no,no,no,action,no,ahead,service+exit and enter+move combined
+12,1d,no,end_of_track,no,no,no,no,action,no,ahead,alternate service
+13,2d,no,end_of_track,no,no,no,no,action,yes,ahead,alternate service and turn+move combined
+14,3d,no,end_of_track,yes,no,no,no,action,no,ahead,alternate service and service+exit and enter+move combined
+15,4a,no,end_of_track,yes,no,no,no,action,yes,ahead,enter+move and turn+move combined
+16,4b,no,end_of_track,yes,no,no,no,action2,yes,ahead,enter+move and turn+move combined
+17,6a,no,end_of_trackyes,yes,no,yes,no,action,yes,ahead,walk+enter and turn+move combined
+18,6b,no,end_of_trackyes,yes,no,yes,no,action,yes,ahead,walk+enter+move combined
+
+102,1e,no,end_of_track,no,no,no,no,derived,no,ahead,-
+
+
+1000,10a,no,end_of_track,yes,no,yes,no,action,yes,ahead,service+exit and walk+enter and turn+move combined
+
+

@@ -1,0 +1,15 @@
+config,domain,concurrency,movement,drivers,switch,walking,unique_distances,goal,turns,subgoals,comment
+1,1a,no,across,no,no,no,no,action,no,ahead,-
+2,1a,no,across,no,no,no,no,action,no,ahead+serviced,-
+3,1b,no,across,no,no,no,yes,action,no,ahead,-
+4,1c,no,across,no,yes,no,no,action,no,ahead,-
+5,1d,no,across,no,no,no,no,action2,no,ahead,-
+6,2a,no,across,no,no,no,no,action,yes,ahead,-
+7,2b,no,across,no,no,no,no,action,yes,ahead,turn+move combined
+8,2c,no,across,no,no,no,yes,action,yes,ahead,turn+move combined
+9,3a,no,across,yes,no,no,no,action,no,ahead,-
+10,3b,no,across,yes,no,no,no,action,no,ahead,service+exit combined
+11,3c,no,across,yes,no,no,no,action,no,ahead,enter+move and service+exit combined
+12,3d,no,across,yes,no,no,no,action,no,ahead+serviced,enter+move and exit+turn and service+exit combined
+13,4a,no,across,yes,no,no,no,action,yes,ahead,service+exit and turn+move combined
+14,5a,no,across,yes,no,yes,no,action,yes,ahead,walk+enter and service+exit combined
