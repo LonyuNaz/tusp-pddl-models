@@ -37,6 +37,8 @@ To describe a scenario you must provide:
 
 This can be done in JSON format.
 
+Something interesting is also the __visualize()__ method that can be called on a ShuntingYard instance. This plots the shunting yard layout as a graph. I dont know how useful/realistic it will portray it but it might help with visualizing the problem and debugging.
+
 ## Data
 
 This folder contains input files describing shunting yard layouts (yard_jsons folder) and scenarios (train_jsons folder) that I used for my research. They can serve as examples for creating your own, or can be used to generate problem instances for your own experiments.
