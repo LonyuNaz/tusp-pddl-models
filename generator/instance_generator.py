@@ -186,6 +186,15 @@ class ShuntingYard:
         for name in names:
             self.drivers.append(Driver(name))
 
+    def make_entry_track(self, name: str):
+        track = self.get_track(name)
+        if track is None:
+            raise Exception(f"Could not find track with name {name}")
+        if not track.name == "entry":
+            nx.relabel_nodes(self.graph, {track.name: "entry"})
+            self.rename_track(track.name, "entry")
+        track.is_entry = True
+
     def add_entry_track(self, conns: List[str], conn_dir: Direction):
         assert all(t in self.get_track_names() for t in conns)
 
